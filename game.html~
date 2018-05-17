@@ -13,10 +13,5 @@
 		</style>
 	</head>
 	<body onload="init()">
-	<!-- the canvas for background -->
-	<canvas id="background" width="600" height="360">
-		Your browser doesnot support canvas. Please try again.
-	</canvas>
-	<script src="space_shot.js"></script>
 	</body>
 </html>

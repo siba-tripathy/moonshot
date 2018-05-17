@@ -1,0 +1,4 @@
+/*
+	object to hold all images of game. Images are created only once. 
+	This is called singleton image*/
+
