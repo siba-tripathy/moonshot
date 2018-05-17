@@ -6,12 +6,18 @@
 		canvas 
 		{
 			position: absolute;
-			top=10px;
-			left=20px;
+			top: 60px;
+			left: 70px;
 			background: transparent;
 		}
 		</style>
 	</head>
 	<body onload="init()">
+	HTML
+	<!-- the canvas for background -->
+	<canvas id="background" width="600" height="360">
+		Your browser doesnot support canvas. Please try again.
+	</canvas>
+	<script src="space_shot.js"></script>
 	</body>
 </html>
