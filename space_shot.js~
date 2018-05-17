@@ -5,7 +5,7 @@ var imageRepository= new function(){
 //define inages
 this.background= new Image();
 //set image src
-this.background.src= "bkg.png";
+this.background.src= "background.jpeg";
 }
 
 /*
@@ -34,7 +34,7 @@ function Drawable()
 */
 function Background()
 {
-	this.speed=1;//speed of backgound
+	this.speed=2;//speed of backgound
 	//implement he abstract function
 	this.draw= function() 
 	{

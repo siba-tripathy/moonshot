@@ -6,16 +6,34 @@
 		canvas 
 		{
 			position: absolute;
-			top: 60px;
-			left: 70px;
+			top: 30px;
+			left: 390px;
 			background: transparent;
+		}
+		#background
+		{
+			z-index : -2;
+		}
+		#main
+		{
+			z-index : -1;
+		}
+		#ship
+		{
+			z-index : -0;
 		}
 		</style>
 	</head>
 	<body onload="init()">
 	<!-- the canvas for background -->
-	<canvas id="background" width="600" height="360">
+	<canvas id="background" width="500" height="600">
 		Your browser doesnot support canvas. Please try again.
+	</canvas>
+	<!-- the canvas for all enemy ships and bullets -->
+	<canvas id="main" width="500" height="600">
+	</canvas>
+	<!-- the canvas for all our ship -->
+	<canvas id="main" width="500" height="600">
 	</canvas>
 	<script src="space_shot.js"></script>
 	</body>

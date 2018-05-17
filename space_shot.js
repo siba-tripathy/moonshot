@@ -5,7 +5,7 @@ var imageRepository= new function(){
 //define inages
 this.background= new Image();
 //set image src
-this.background.src= "bkg.png";
+this.background.src= "background.jpeg";
 }
 
 /*
@@ -15,11 +15,13 @@ this.background.src= "bkg.png";
 
 function Drawable()
 {
-	this.init = function(x,y) 
+	this.init = function(x,y,width,height) 
 	{
 		//deafult variables
 		this.x=x;
 		this.y=y;
+		this.width=width;
+		this.height=height;
 	}
 	this.speed=0;
 	this.canvasWidth=0;
@@ -34,7 +36,7 @@ function Drawable()
 */
 function Background()
 {
-	this.speed=1;//speed of backgound
+	this.speed=2;//speed of backgound
 	//implement he abstract function
 	this.draw= function() 
 	{
