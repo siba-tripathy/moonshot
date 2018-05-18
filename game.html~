@@ -12,16 +12,20 @@
 		}
 		#background
 		{
-			z-index : -2;
+			z-index: -2;
 		}
 		#main
 		{
-			z-index : -1;
+			z-index: -1;
 		}
 		#ship
 		{
-			z-index : -0;
+			z-index: 0;
 		}
+		body {
+    background-image: url("universe.jpg");
+    background-repeat: no-repeat;
+    }
 		</style>
 	</head>
 	<body>
@@ -33,7 +37,7 @@
 	<canvas id="main" width="500" height="600">
 	</canvas>
 	<!-- the canvas for all our ship -->
-	<canvas id="main" width="500" height="600">
+	<canvas id="ship" width="500" height="600">
 	</canvas>
 	<script src="space_shot.js"></script>
 	</body>
