@@ -6,8 +6,10 @@ var imageRepository= new function(){
 this.background= new Image();
 this.spaceship=new Image();
 this.bullet=new Image();
+this.enemy=new Image();
+this.enemyBullet= new Image();
 //check if all images are loaded
-var numImages=3;
+var numImages=5;// number of images to load before game starts
 var numLoaded=0;
 function imageLoaded()
 {
@@ -26,10 +28,18 @@ this.spaceship.onload=function(){
 this.bullet.onload=function(){
 	imageLoaded();
 }
+this.enemy.onload=function(){
+	imageLoaded();
+}
+this.enemyBullet.onload=function(){
+	imageLoaded();
+}
 //set image src
 this.background.src= "images/background.jpeg";
-this.spaceship.src="images/usership.png"
-this.bullet.src="images/bullet.png"
+this.spaceship.src="images/usership.png";
+this.bullet.src="images/bullet.png";
+this.enemy.src="images/enemy.png";
+this.enemyBullet.src="images/bullet_enemy.png";
 }
 
 /*
@@ -160,7 +170,7 @@ window.requestAnimFrame = (function(){
 				window.setTimeout(callback, 1000 / 60);
 			};
 })();
-
+//Pool object handles all those objects that show when alive only, not always
 function Pool(maxSize)
 {
 	var size= maxSize;
@@ -168,13 +178,31 @@ function Pool(maxSize)
 	/*
 	populate the pool array with bullet objects
 	*/
-	this.init= function()
+	this.init= function(object)
 	{
+		if(object == "bullet"){
 		for(var i=0;i<size;i++)	{
 			//initialize the bullet object
-			var bullet=new Bullet();
+			var bullet=new Bullet("bullet");
 			bullet.init(0,0,imageRepository.bullet.width,imageRepository.bullet.height);
 			pool[i]=bullet;
+		}
+		}
+		else if(object == "enemy"){
+		for(var i=0;i<size;i++)	{
+			//initialize the Enemy object
+			var bullet=new Enemy();
+			bullet.init(0,0,imageRepository.enemy.width,imageRepository.enemy.height);
+			pool[i]=enemy;
+		}
+		}
+		else if(object == "enemyBullet"){
+		for(var i=0;i<size;i++)	{
+			//initialize the enemybullet object
+			var bullet=new Bullet("enemyBullet");
+			bullet.init(0,0,imageRepository.enemyBullet.width,imageRepository.enemyBullet.height);
+			pool[i]=bullet;
+		}
 		}
 	};
 	
@@ -225,6 +253,7 @@ array
 function Bullet()
 {
 	this.alive=false;
+	var self= object; // to indicate which kind of bullet
 	this.spawn= function(x,y,speed)
 	{
 		this.x=x;
@@ -236,12 +265,22 @@ function Bullet()
 	{
 		this.context.clearRect(this.x, this.y, this.width, this.height);
 		this.y -= this.speed;
-		if (this.y <= 0 - this.height)
+		if (self === "bullet" && this.y <= 0 - this.height)
+		{
+			return true;
+		}
+		else if(self === "enemyBullet" && this.y >= 0 - this.canvasHeight)
 		{
 			return true;
 		}
 		else {
+			if(self === "bullet")
 			this.context.drawImage(imageRepository.bullet, this.x, this.y);
+			else if(self=== "enemyBullet")
+			{
+				this.context.drawImage(imageRepository.enemyBullet, this.x, this.y);
+			}
+			return false;
 		}
 	};
 	/*
