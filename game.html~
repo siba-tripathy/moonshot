@@ -24,12 +24,15 @@
 		}
 		</style>
 	</head>
-	<body onload="init()">
+	<body>
 	<!-- the canvas for background -->
 	<canvas id="background" width="500" height="600">
 		Your browser doesnot support canvas. Please try again.
 	</canvas>
-	<!-- the canvas for all ships and bullets -->
+	<!-- the canvas for all enemy ships and bullets -->
+	<canvas id="main" width="500" height="600">
+	</canvas>
+	<!-- the canvas for all our ship -->
 	<canvas id="main" width="500" height="600">
 	</canvas>
 	<script src="space_shot.js"></script>

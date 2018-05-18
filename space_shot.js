@@ -4,8 +4,31 @@
 var imageRepository= new function(){
 //define inages
 this.background= new Image();
+this.spaceship=new Image();
+//this.bullet=new Image();
+//check if all images are loaded
+var numIamges=3;
+var numLoaded=0;
+function imageLoaded()
+{
+	numLoaded++;
+	if(numLoaded===numImages)
+	{
+		window.init();
+	}
+}
+this.background.onload=function(){
+	imageLoaded();
+}
+this.spaceship.onload=function(){
+	imageLoaded();
+}
+/*this.bullet.onload=function(){
+	imageLoaded();
+}*/
 //set image src
-this.background.src= "background.jpeg";
+this.background.src= "images/background.jpeg";
+this.spaceship.src="images/usership.png"
 }
 
 /*
@@ -51,6 +74,8 @@ function Background()
 }
 // Set Background to inherit properties from Drawable
 Background.prototype= new Drawable();
+
+
 
 /* Game object which hold all objects and variables*/
 function Game()
@@ -107,6 +132,23 @@ window.requestAnimFrame = (function(){
 			};
 })();
 
+function Pool(maxSize)
+{
+	var size= maxSize;
+	var pool[];
+	/*
+	populate the pool array with bullet objects
+	*/
+	this.init= function()
+	{
+		//initialize the bullet object
+		var bullet=new Bullet();
+		bullet.init(0,0,imageRepository.bullet.width,imageRepository.bullet.height);
+		pool[i]=bullet;
+	}
+};
+/* Grabs 
+*/
 var game= new Game();
 function init()
 {
