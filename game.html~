@@ -25,6 +25,7 @@
 		body {
     background-image: url("universe.jpg");
     background-repeat: no-repeat;
+    background-size: 100%;
     }
 		</style>
 	</head>
@@ -39,6 +40,6 @@
 	<!-- the canvas for all our ship -->
 	<canvas id="ship" width="500" height="600">
 	</canvas>
-	<script src="space_shot.js"></script>
+	<script src="space_shot3.js"></script>
 	</body>
 </html>
