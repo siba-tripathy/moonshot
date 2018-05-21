@@ -12,3 +12,5 @@ Future Scope :
 	- High Score Table (Database)
 	
 	- Multiple Levels and Bosses
+	
+Developed solely by Siba Prasad Tripathy.
