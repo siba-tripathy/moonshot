@@ -190,6 +190,32 @@ function Game() {
 			return false;
 		}
 	};
+		// Restart the game
+	this.restart = function() {
+		this.gameOverAudio.pause();
+
+		document.getElementById('game-over').style.display = "none";
+		this.bgContext.clearRect(0, 0, this.bgCanvas.width, this.bgCanvas.height);
+		this.shipContext.clearRect(0, 0, this.shipCanvas.width, this.shipCanvas.height);
+		this.mainContext.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
+
+		this.quadTree.clear();
+
+		this.background.init(0,0);
+		this.ship.init(this.shipStartX, this.shipStartY,imageRepository.spaceship.width, imageRepository.spaceship.height);
+		this.enemyPool.init("enemy");
+		this.spawnWave();
+		this.enemyBulletPool.init("enemyBullet");
+
+		this.playerScore = 0;
+
+		this.backgroundAudio.currentTime = 0;
+		this.backgroundAudio.play();
+
+		this.start();
+	};
+
+
 	//Spawning a wave of enemies
 	this.spawnWave = function() 
 	{
@@ -208,12 +234,19 @@ function Game() {
 				y += spacer;
 			}
 		}
-	}
+	};
 	// Start the animation loop
 	this.start = function() {
 		this.ship.draw();
 		this.backgroundAudio.play();
 		animate();
+	};
+	// Game over
+	this.gameOver = function() {
+		this.backgroundAudio.pause();
+		this.gameOverAudio.currentTime = 0;
+		this.gameOverAudio.play();
+		document.getElementById('game-over').style.display = "block";
 	};
 }
 /**
@@ -224,25 +257,30 @@ function Game() {
  */
 function animate() {
 	document.getElementById('score').innerHTML = game.playerScore;
-	//insert objecsts into quadtree
+	// Insert objects into quadtree
 	game.quadTree.clear();
 	game.quadTree.insert(game.ship);
 	game.quadTree.insert(game.ship.bulletPool.getPool());
 	game.quadTree.insert(game.enemyPool.getPool());
 	game.quadTree.insert(game.enemyBulletPool.getPool());
+
 	detectCollision();
-	// animate funcn for game objects
-	if(game.ship.alive)
-	{requestAnimFrame( animate );
-	game.background.draw();
-	game.ship.move();
-	game.ship.bulletPool.animate();
-	game.enemyPool.animate();
-	game.enemyBulletPool.animate();
-	}
+
+	// No more enemies
 	if (game.enemyPool.getPool().length === 0) {
 		game.spawnWave();
-}
+	}
+
+	// Animate game objects
+	if (game.ship.alive) {
+		requestAnimFrame( animate );
+
+		game.background.draw();
+		game.ship.move();
+		game.ship.bulletPool.animate();
+		game.enemyPool.animate();
+		game.enemyBulletPool.animate();
+	}
 }
 	/**
  * requestAnim shim layer by Paul Irish
@@ -263,6 +301,7 @@ window.requestAnimFrame = (function(){
 function detectCollision() {
 	var objects = [];
 	game.quadTree.getAllObjects(objects);
+
 	for (var x = 0, len = objects.length; x < len; x++) {
 		game.quadTree.findObjects(obj = [], objects[x]);
 
@@ -523,7 +562,9 @@ function Ship() {
 			}
 			// Finish by redrawing the ship
 			if(!this.isColliding)
+			{
 			this.draw();
+			}
 			else
 			{	
 				this.alive=false;
@@ -690,16 +731,20 @@ function QuadTree(boundBox, lvl) {
 	this.nodes = [];
 	var level = lvl || 0;
 	var maxLevels = 5;
+
 	/*
 	 * Clears the quadTree and all nodes of objects
 	 */
 	this.clear = function() {
 		objects = [];
+
 		for (var i = 0; i < this.nodes.length; i++) {
 			this.nodes[i].clear();
 		}
+
 		this.nodes = [];
 	};
+
 	/*
 	 * Get all objects in the quadTree
 	 */
@@ -707,11 +752,14 @@ function QuadTree(boundBox, lvl) {
 		for (var i = 0; i < this.nodes.length; i++) {
 			this.nodes[i].getAllObjects(returnedObjects);
 		}
+
 		for (var i = 0, len = objects.length; i < len; i++) {
 			returnedObjects.push(objects[i]);
 		}
+
 		return returnedObjects;
 	};
+
 	/*
 	 * Return all objects that the object could collide with
 	 */
@@ -720,15 +768,19 @@ function QuadTree(boundBox, lvl) {
 			console.log("UNDEFINED OBJECT");
 			return;
 		}
+
 		var index = this.getIndex(obj);
 		if (index != -1 && this.nodes.length) {
 			this.nodes[index].findObjects(returnedObjects, obj);
 		}
+
 		for (var i = 0, len = objects.length; i < len; i++) {
 			returnedObjects.push(objects[i]);
 		}
+
 		return returnedObjects;
 	};
+
 	/*
 	 * Insert the object into the quadTree. If the tree
 	 * excedes the capacity, it will split and add all
@@ -738,29 +790,37 @@ function QuadTree(boundBox, lvl) {
 		if (typeof obj === "undefined") {
 			return;
 		}
+
 		if (obj instanceof Array) {
 			for (var i = 0, len = obj.length; i < len; i++) {
 				this.insert(obj[i]);
 			}
+
 			return;
 		}
+
 		if (this.nodes.length) {
 			var index = this.getIndex(obj);
 			// Only add the object to a subnode if it can fit completely
 			// within one
 			if (index != -1) {
 				this.nodes[index].insert(obj);
+
 				return;
 			}
 		}
+
 		objects.push(obj);
+
 		// Prevent infinite splitting
 		if (objects.length > maxObjects && level < maxLevels) {
 			if (this.nodes[0] == null) {
 				this.split();
 			}
+
 			var i = 0;
 			while (i < objects.length) {
+
 				var index = this.getIndex(objects[i]);
 				if (index != -1) {
 					this.nodes[index].insert((objects.splice(i,1))[0]);
@@ -771,19 +831,23 @@ function QuadTree(boundBox, lvl) {
 			}
 		}
 	};
+
 	/*
 	 * Determine which node the object belongs to. -1 means
 	 * object cannot completely fit within a node and is part
 	 * of the current node
 	 */
 	this.getIndex = function(obj) {
+
 		var index = -1;
 		var verticalMidpoint = this.bounds.x + this.bounds.width / 2;
 		var horizontalMidpoint = this.bounds.y + this.bounds.height / 2;
+
 		// Object can fit completely within the top quadrant
 		var topQuadrant = (obj.y < horizontalMidpoint && obj.y + obj.height < horizontalMidpoint);
 		// Object can fit completely within the bottom quandrant
 		var bottomQuadrant = (obj.y > horizontalMidpoint);
+
 		// Object can fit completely within the left quadrants
 		if (obj.x < verticalMidpoint &&
 				obj.x + obj.width < verticalMidpoint) {
@@ -803,8 +867,10 @@ function QuadTree(boundBox, lvl) {
 				index = 3;
 			}
 		}
+
 		return index;
 	};
+
 	/*
 	 * Splits the node into 4 subnodes
 	 */
@@ -812,6 +878,7 @@ function QuadTree(boundBox, lvl) {
 		// Bitwise or [html5rocks]
 		var subWidth = (this.bounds.width / 2) | 0;
 		var subHeight = (this.bounds.height / 2) | 0;
+
 		this.nodes[0] = new QuadTree({
 			x: this.bounds.x + subWidth,
 			y: this.bounds.y,
@@ -838,32 +905,7 @@ function QuadTree(boundBox, lvl) {
 		}, level+1);
 	};
 }
-// Game over
-	this.gameOver = function() {
-		this.backgroundAudio.pause();
-		this.gameOverAudio.currentTime = 0;
-		this.gameOverAudio.play();
-		document.getElementById('game-over').style.display = "block";
-	};
-// Restart the game
-	this.restart = function() {
-		this.gameOverAudio.pause();
-		document.getElementById('game-over').style.display = "none";
-		this.bgContext.clearRect(0, 0, this.bgCanvas.width, this.bgCanvas.height);
-		this.shipContext.clearRect(0, 0, this.shipCanvas.width, this.shipCanvas.height);
-		this.mainContext.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
-		this.quadTree.clear();
-		this.background.init(0,0);
-		this.ship.init(this.shipStartX, this.shipStartY,
-		               imageRepository.spaceship.width, imageRepository.spaceship.height);
-		this.enemyPool.init("enemy");
-		this.spawnWave();
-		this.enemyBulletPool.init("enemyBullet");
-		this.playerScore = 0;
-		this.backgroundAudio.currentTime = 0;
-		this.backgroundAudio.play();
-		this.start();
-	};
+
 
 
 

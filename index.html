@@ -37,22 +37,22 @@
 			}
 			.game-over {
 				position: absolute;
-				top: 100px;
-				left: 410px;
+				top: 280px;
+				left: 510px;
 				color: #FF7F00;
 				font-family: Helvetica, sans-serif;
-				font-size: 10px;
+				font-size: 30px;
 				cursor: default;
 				display: none;
 			}
 			.game-over span {
-				font-size: 50px;
+				font-size: 20px;
 				cursor: pointer;
 				position: relative;
 				left: 50px;
 			}
 			.game-over span:hover {
-				color: #FFD700;
+				color: #FF7F00;
 			}
 			.loading {
 				position: absolute;
@@ -78,7 +78,8 @@
 	<canvas id="ship" width="500" height="600">
 	</canvas>
 	<div class="score">SCORE: <span id="score"></span></div>
-		<div class="game-over" id="game-over">GAME OVER<p><span onclick="game.restart()">Restart</span></p></div>
+		<div class="game-over" id="game-over">GAME OVER<p>
+		<span onclick="game.restart()">Restart</span></p></div>
 		<div class="loading" id="loading">LOADING...<p>Please wait</p></div>
 	<script src="space_shot.js"></script>
 	</body>
