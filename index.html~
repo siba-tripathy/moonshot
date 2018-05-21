@@ -76,7 +76,7 @@
  	   	text-align: right;
 			}
 		</style>
-	<link rel="icon" href="/1.jpg" >
+	<link rel="icon" href="/1.jpg" />
 	</head>
 	<body>
 	<!-- the canvas for background -->
