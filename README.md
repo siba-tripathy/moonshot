@@ -13,4 +13,4 @@ Future Scope :
 	
 	- Multiple Levels and Bosses
 	
-Developed solely by Siba Prasad Tripathy.
+Developed solely by <a href=" https://www.linkedin.com/in/siba-prasad-tripathy/">Siba Prasad Tripathy</a>.
