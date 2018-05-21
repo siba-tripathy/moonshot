@@ -36,7 +36,7 @@ this.enemyBullet.onload=function(){
 }
 //set image src
 this.background.src= "images/background.jpeg";
-this.spaceship.src="images/usership.png";
+this.spaceship.src="images/usership2.png";
 this.bullet.src="images/bullet.png";
 this.enemy.src="images/enemy.png";
 this.enemyBullet.src="images/bullet_enemy.png";
@@ -192,6 +192,7 @@ function Game() {
 	};
 		// Restart the game
 	this.restart = function() {
+		location.reload();
 		this.gameOverAudio.pause();
 
 		document.getElementById('game-over').style.display = "none";

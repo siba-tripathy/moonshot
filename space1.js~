@@ -580,7 +580,7 @@ function Ship() {
 	 * Fires two bullets
 	 */
 	this.fire = function() {
-		this.bulletPool.getTwo(this.x+7, this.y, 3,this.x+33, this.y, 3);
+		this.bulletPool.getTwo(this.x+7, this.y, 3,this.x+26, this.y, 3);
 		game.laser.get();
 	};
 }
